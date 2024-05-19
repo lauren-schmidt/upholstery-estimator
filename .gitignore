@@ -127,7 +127,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-upholstery-env
+upholstery-env/
 
 # Spyder project settings
 .spyderproject
