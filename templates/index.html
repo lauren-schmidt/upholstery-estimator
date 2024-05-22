@@ -41,40 +41,44 @@
                 <label class="form-check-label" for="radio2">Upholstery AND Replace Foam and/or Springs</label>
             </div>
 
-            <h6 style="margin-top: 20px">Add-Ons</h6>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="addons" value="piping" id="piping">
-                <label class="form-check-label" for="piping">Add Piping</label>
+            
+            <div id="addons">
+                <h6 style="margin-top: 20px">Add-Ons</h6>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="addons1" value="piping" id="piping">
+                    <label class="form-check-label" for="piping">Add Piping</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="addons2" value="seaming" id="seaming">
+                    <label class="form-check-label" for="seaming">Add Seaming</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="addons3" value="pattern_matching" id="pattmatch">
+                    <label class="form-check-label" for="pattmatch">Add Pattern-Matching</label>
+                </div>
+    
+                <h6 style="margin-top: 20px">Tufting</h6>
+                <div class="form-floating">
+                    <input type="number" id="numbtn" name="numbtn" class="form-control" min="0" max="20" value="0" required>
+                    <label class="form-label" for="numbtn">Number of Buttons</label>
+                    <div class="invalid-feedback">Please enter a valid number of buttons.</div>
+                </div>
+    
+                <h6 style="margin-top: 20px">Decorative Tacks</h6>
+                <div class="form-floating">
+                    <input type="number" id="numtacks" name="numtacks" class="form-control" min="0" max="20" value="0" required>
+                    <label class="form-label" for="numtacks">Feet</label>
+                    <div class="invalid-feedback">Please enter a valid number of feet.</div>
+                </div>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="addons" value="seaming" id="seaming">
-                <label class="form-check-label" for="seaming">Add Seaming</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="addons" value="pattern_matching" id="pattmatch">
-                <label class="form-check-label" for="pattmatch">Add Pattern-Matching</label>
-            </div>
-
-            <h6 style="margin-top: 20px">Tufting</h6>
-            <div class="form-floating">
-                <input type="number" id="numbtn" name="numbtn" class="form-control" min="0" max="20" value="0" required>
-                <label class="form-label" for="numbtn">Number of Buttons</label>
-                <div class="invalid-feedback">Please enter a valid number of buttons.</div>
-            </div>
-
-            <h6 style="margin-top: 20px">Decorative Tacks</h6>
-            <div class="form-floating">
-                <input type="number" id="numtacks" name="numtacks" class="form-control" min="0" max="20" value="0" required>
-                <label class="form-label" for="numtacks">Feet</label>
-                <div class="invalid-feedback">Please enter a valid number of feet.</div>
-            </div>
+            
 
             <div style="margin-top:20px">
                 <button type="submit" class="btn btn-primary">Get Estimate</button>
             </div>
             
             <div style="margin-top:20px">
-                <h3 class="mb-3">Estimate: $0.00</h3>
+                <h3 class="mb-3">Estimate: ${{estimate}}</h3>
             </div>
         </div>
     </form>
@@ -83,11 +87,33 @@
         document.getElementById('projecttype').addEventListener('change', function() {
             var projectType = this.value;
             var seatTypeSection = document.getElementById('seatTypeSection');
+            var addonSection = document.getElementById('addons');
             if (projectType === 'drc' || projectType === 'drc-a' || projectType === 'drc-b' || projectType === 'drc-ab' || projectType === 'footstool') {
                 seatTypeSection.style.display = 'block';
+                addonSection.style.display = 'block';
             } else {
                 seatTypeSection.style.display = 'none';
             }
+
+            if(projectType == 'bc')
+            {
+                addonSection.style.display = 'block';
+                document.getElementById('seaming').disabled=true;
+                document.getElementById('pattmatch').disabled=true;
+                document.getElementById('numbtn').disabled=true;
+                document.getElementById('numtacks').disabled=true;
+            }
+
+            if(projectType == 'tp')
+            {
+                addonSection.style.display = 'none';
+            }
+
+            if(projectType == 'o' || projectType == 'o-o')
+            {
+                addonSection.style.display = 'block';
+            }
         });
+
     </script>
 {% endblock %}

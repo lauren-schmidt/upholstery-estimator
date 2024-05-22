@@ -21,23 +21,56 @@ seat_types = {
     'd' : 'Drop-In'
 }
 
-def validate_form(form_response):
-    # Check if all required fields are filled
-    
-    
-    # Additional validation can be added here
+project_type_prices = {
+    'drc': (65.00, 40.00),
+    'drc-a': (75.00, 50.00),
+    'drc-b': (150.00, 125.00),
+    'drc-ab': (150.00, 125.00),
+    'o': (200.00, 200.00),
+    'o-o': (300.00, 300.00),
+    'fs': (75.00, 50.00),
+    'bc': (0.00, 0.00),
+    'tp': (0.00, 0.00)
+}
 
-    return True
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-       
-        if validate_form(request.form):
-            
-            return redirect(url_for('index'))  # Redirect to avoid resubmission on refresh
+        # Calculate the price 
+        project_type = request.form['projecttype']
+        seat_type = request.form['seattype']
+        price = 10.00  # Initializing price variable
 
-    return render_template('index.html', project_types=project_types, seat_types=seat_types)
+        # Check if the project type is in the project_type_prices dictionary
+        if project_type in project_type_prices:
+            price = project_type_prices[project_type][0] if seat_type == 'a' else project_type_prices[project_type][1]
+        
+        #Check for upholstery vs foam 
+        if request.form['upholsteryradio'] == 'upholstery_foam':
+            price = price + 30.00
+        
+        #Check for checked add-ons 
+        if request.form['addons1'] == 'piping':
+            price = price + 5.00
+        if request.form['addons2'] == 'seaming':
+            price = price + 40.00
+        if request.form['addons3'] == 'pattmatch':
+            price = price + 5.00
+        
+        #Check for number of buttons 
+        numBtn = request.form['numbtn']
+        price = price + (10.00 * int(numBtn))
+
+        #Check for feet of decorative tacks 
+        numTacks = request.form['numtacks']
+        price = price + (20.00 * int(numTacks))
+
+        #Convert price to string
+        price = str(price)
+        return render_template('index.html', project_types=project_types, seat_types=seat_types, estimate = price) 
+    
+    return render_template('index.html', project_types=project_types, seat_types=seat_types, estimate = '0.00')
 
 if __name__ == '__main__':
     app.run(debug=True)
